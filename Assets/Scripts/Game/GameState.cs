@@ -19,6 +19,7 @@ public class GameState : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        restaurant = new Restaurant(null);
     }
 
     private void Start()
