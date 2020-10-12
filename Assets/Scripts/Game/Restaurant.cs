@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices.WindowsRuntime;
 
-//V0.1
+//V0.11
 public class Customer
 {
     //What food the customer ordered
@@ -88,6 +88,31 @@ public class Restaurant
             OnFoodCanceledPreparing?.Invoke(food);
     }
 
+
+    //Finds a customer to serve the item to
+    public void ServeFood(PreparingFood food)
+    {
+        //Find all customers with our given item
+        List<Customer> waitingCustomers = customers.FindAll((Customer customer) => customer.order == food.recipe.food);
+
+        if(waitingCustomers.Count >= 1)
+            ServeFood(food, GetLongestWaitingCustomer(waitingCustomers));
+    }
+
+    public void ServeFood(PreparingFood food, Customer customer)
+    {
+        if(customer.order != food.recipe.food)
+            return;
+
+        //Remove the customer from our list, and fire the event
+        customers.Remove(customer);
+        OnCustomerServed?.Invoke(customer);
+
+        //Remove the item for our list and fire the event
+        foodsBeingPrepared.Remove(food);
+        OnFoodFinishedPreparing?.Invoke(food);
+    }
+
     public void Update()
     {
         //Create a tempororary list for foods that will be served
@@ -95,14 +120,9 @@ public class Restaurant
         foreach(PreparingFood food in foodsBeingPrepared)
         {
             food.timeRemaining -= Time.deltaTime;
-            if(food.timeRemaining <= 0)
-                foodsToServe.Add(food);
+            food.timeRemaining = Mathf.Max(0, food.timeRemaining);
         }
-        //Serve the food off
-        foreach(PreparingFood food in foodsToServe)
-        {
-            ServeFood(food);
-        }
+
 
         List<Customer> leavingCustomers = new List<Customer>(customers.Count);
         foreach(Customer customer in customers)
@@ -122,26 +142,6 @@ public class Restaurant
     public List<Recipe> GetMenu()
     {
         return recipes;
-    }
-
-    //Finds a customer to serve the item to
-    void ServeFood(PreparingFood food)
-    {
-        //Find all customers with our given item
-        List<Customer> waitingCustomers = customers.FindAll((Customer customer) => customer.order == food.recipe.food);
-        if(waitingCustomers.Count >= 1)
-        {   
-            //Find the customer waiting the longest
-            Customer customer = GetLongestWaitingCustomer(waitingCustomers);
-
-            //Remove the customer from our list, and fire the event
-            customers.Remove(customer);
-            OnCustomerServed?.Invoke(customer);
-        }
-
-        //Remove the item for our list and fire the event
-        foodsBeingPrepared.Remove(food);
-        OnFoodFinishedPreparing?.Invoke(food);
     }
 
     Customer GetLongestWaitingCustomer(List<Customer> waitingCustomers)

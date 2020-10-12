@@ -8,9 +8,6 @@ public class GameState : MonoBehaviour
 {
     public static GameState instance { get; private set; }
 
-    [SerializeField]
-    List<Sprite> customerSprites;
-
     Restaurant restaurant;
     float timeLeftTillDayEnds;
 
@@ -39,6 +36,7 @@ public class GameState : MonoBehaviour
         if(timeLeftTillDayEnds <= 0)
         {
             Debug.LogWarning("Day ended");
+            CancelInvoke();
             //Handle day end stuff here
         }
     }
@@ -60,8 +58,4 @@ public class GameState : MonoBehaviour
         return timeLeftTillDayEnds;
     }
 
-    public List<Sprite> GetCustomerSprites()
-    {
-        return customerSprites;
-    }
 }
