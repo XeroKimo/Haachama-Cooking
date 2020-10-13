@@ -28,6 +28,7 @@ public class RestaurantUI : MonoBehaviour
             if(foodUI.GetPreparingFood() == null)
             {
                 foodUI.SetPreparingFood(food);
+                break;
             }
         }
     }

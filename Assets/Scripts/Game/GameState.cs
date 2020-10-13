@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//V0.12
+//V0.13
 public class GameState : MonoBehaviour
 {
     public static GameState instance { get; private set; }
@@ -13,6 +13,9 @@ public class GameState : MonoBehaviour
     [SerializeField]
     UnityEngine.UI.GraphicRaycaster raycaster;
 
+    public event Action OnDayEnds;
+
+    public GameObject debugEndScreen;
 
     const float customerRate = 5.0f;
     private void Awake()
@@ -32,15 +35,17 @@ public class GameState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        restaurant.Update();
+        if(timeLeftTillDayEnds > 0)
+            restaurant.Update();
 
-        timeLeftTillDayEnds -= Time.deltaTime;
         if(timeLeftTillDayEnds <= 0)
         {
-            Debug.LogWarning("Day ended");
+            OnDayEnds?.Invoke();
+            debugEndScreen.SetActive(true);
             CancelInvoke();
             //Handle day end stuff here
         }
+        timeLeftTillDayEnds -= Time.deltaTime;
     }
 
     void NewCustomer()

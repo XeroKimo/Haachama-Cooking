@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8624aefce1615da4f93cfea0a2d347eb, type: 3}
-  m_Name: Debug Recipe
+  m_Name: Onigiri
   m_EditorClassIdentifier: 
   food:
-    foodName: Croissant
-    sprite: {fileID: 21300000, guid: dc691f5764abe0347a58135d5caa9f9a, type: 3}
+    foodName: Onigiri
+    sprite: {fileID: 21300000, guid: c0c8262c73d173040b5f1fc6fb886745, type: 3}
   timeToPrepare: 5

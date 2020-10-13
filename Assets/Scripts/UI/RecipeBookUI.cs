@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class RecipeBookUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    RecipeUI recipeUIPrefab;
+
+    [SerializeField]
+    Transform container;
+
+    private void Start()
     {
-        
+        List<Recipe> recipes = GameState.instance.GetRestaurant().GetMenu();
+
+        foreach(Recipe recipe in recipes)
+        {
+            RecipeUI obj = Instantiate(recipeUIPrefab, container);
+            obj.SetRecipe(recipe);
+
+            obj.GetButton().onClick.AddListener(() => PrepareRecipe(obj));
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void PrepareRecipe(RecipeUI recipe)
     {
-        
+        GameState.instance.GetRestaurant().PrepareFood(recipe.GetRecipe());
     }
 }

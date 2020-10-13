@@ -9,3 +9,7 @@
 !/Packages/*
 !/ProjectSettings
 !/ProjectSettings/*
+!/TemplateData
+!/TemplateData/*
+!/Build
+!/Build/*

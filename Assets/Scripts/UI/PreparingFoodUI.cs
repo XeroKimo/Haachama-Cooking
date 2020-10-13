@@ -34,7 +34,7 @@ public class PreparingFoodUI : MonoBehaviour, IDragHandler, IEndDragHandler
         //Check to see if we're dropping where customer is, or where trash is
         foreach(RaycastResult result in output)
         {
-            if(result.gameObject.tag == "Customer")
+            if(result.gameObject.tag == "Customer" && food.timeRemaining <= 0)
             {
                 //If it's a customer, attempt to serve it off
                 if(GameState.instance.GetRestaurant().ServeFood(food, result.gameObject.GetComponent<CustomerUI>().GetCustomer()))
