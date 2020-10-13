@@ -179,11 +179,12 @@ MonoBehaviour:
       m_Calls: []
   m_text: "1. These are your customers, they have an order and have limited patience,
     if their timer runs out, they will leave. \nThere can only be 5 customers at
-    a time\n\n2. This is your menu, just click them and they will start being prepared\n\n3.
-    These are foods that are currently being made. When finished, drag them to a
-    customer to serve it off. \nThere can only be a total of 3 items being prepared
-    or finished preparing at a time\n\n4. Accidently clicked on a food that isn't
-    being ordered? Drag it to the trash can and we'll clean up for you"
+    a time\n\n2. This is your recipe book, just click them and Haachama will start
+    preparing the food\n\n3. These are foods that are currently being made. When
+    finished, drag them to a customer to serve it off. \nThere can only be a total
+    of 3 items being prepared or finished preparing at a time\n\n4. Accidently clicked
+    on a food that isn't being ordered? Drag it to the trash can and we'll clean
+    up for you"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -552,7 +553,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &516425157
 RectTransform:
   m_ObjectHideFlags: 0
@@ -830,7 +831,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1114981094
 RectTransform:
   m_ObjectHideFlags: 0
