@@ -30,14 +30,14 @@ public class PreparingFood
 
 }
 
-//V0.1
+//V0.12
 public class Restaurant
 {
     List<Customer> customers;
     List<Recipe> recipes;
     List<PreparingFood> foodsBeingPrepared;
 
-    public event Action<Customer> OnCustomerEnetered;
+    public event Action<Customer> OnCustomerEntered;
     public event Action<Customer> OnCustomerServed;
     public event Action<Customer> OnCustomerLeave;
 
@@ -49,6 +49,7 @@ public class Restaurant
     {
         customers = new List<Customer>(GameConstants.maxCustomerCount);
         this.recipes = new List<Recipe>(recipes);
+        recipes.Sort((Recipe lh, Recipe rh) => lh.timeToPrepare.CompareTo(rh.timeToPrepare));
         foodsBeingPrepared = new List<PreparingFood>(GameConstants.maxPrepareFoodCount);
     }
 
@@ -61,8 +62,9 @@ public class Restaurant
 
         customers.Add(customer);
         customer.order = recipes[UnityEngine.Random.Range(0, recipes.Count)].food;
+        customer.timeRemaining = GameConstants.customerWaitTime;
 
-        OnCustomerEnetered?.Invoke(customer);
+        OnCustomerEntered?.Invoke(customer);
 
         return true;
     }
@@ -82,27 +84,34 @@ public class Restaurant
 
     //Find and remove the food we wish to stop preparing
     //Invoke OnFoodCanceledPreparing if we do
-    public void StopPreparingFood(PreparingFood food)
+    public bool StopPreparingFood(PreparingFood food)
     {
         if(foodsBeingPrepared.Remove(food))
+        {
             OnFoodCanceledPreparing?.Invoke(food);
+            return true;
+        }
+
+        return false;
     }
 
 
     //Finds a customer to serve the item to
-    public void ServeFood(PreparingFood food)
+    public bool ServeFood(PreparingFood food)
     {
         //Find all customers with our given item
         List<Customer> waitingCustomers = customers.FindAll((Customer customer) => customer.order == food.recipe.food);
 
         if(waitingCustomers.Count >= 1)
-            ServeFood(food, GetLongestWaitingCustomer(waitingCustomers));
+            return ServeFood(food, GetLongestWaitingCustomer(waitingCustomers));
+
+        return false;
     }
 
-    public void ServeFood(PreparingFood food, Customer customer)
+    public bool ServeFood(PreparingFood food, Customer customer)
     {
         if(customer.order != food.recipe.food)
-            return;
+            return false;
 
         //Remove the customer from our list, and fire the event
         customers.Remove(customer);
@@ -111,6 +120,8 @@ public class Restaurant
         //Remove the item for our list and fire the event
         foodsBeingPrepared.Remove(food);
         OnFoodFinishedPreparing?.Invoke(food);
+
+        return true;
     }
 
     public void Update()

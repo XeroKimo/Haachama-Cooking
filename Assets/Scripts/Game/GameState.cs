@@ -3,20 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//V0.1
+//V0.12
 public class GameState : MonoBehaviour
 {
     public static GameState instance { get; private set; }
 
     Restaurant restaurant;
     float timeLeftTillDayEnds;
+    [SerializeField]
+    UnityEngine.UI.GraphicRaycaster raycaster;
 
 
     const float customerRate = 5.0f;
     private void Awake()
     {
         instance = this;
-        restaurant = new Restaurant(null);
+        restaurant = new Restaurant(new List<Recipe>(Resources.LoadAll<Recipe>("Recipes")));
     }
 
     private void Start()
@@ -58,4 +60,8 @@ public class GameState : MonoBehaviour
         return timeLeftTillDayEnds;
     }
 
+    public UnityEngine.UI.GraphicRaycaster GetRaycaster()
+    {
+        return raycaster;
+    }
 }
