@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-//V0.1
-public class RecipeUI : MonoBehaviour
+using UnityEngine.EventSystems;
+using System;
+//V0.11
+public class RecipeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     Recipe recipe;
     [SerializeField]
@@ -12,6 +13,9 @@ public class RecipeUI : MonoBehaviour
 
     [SerializeField]
     Button button;
+
+    public event Action<PointerEventData, RecipeUI> PointerEnter;
+    public event Action<PointerEventData, RecipeUI> PointerExit;
 
     public void SetRecipe(Recipe recipe)
     {
@@ -21,4 +25,14 @@ public class RecipeUI : MonoBehaviour
 
     public Recipe GetRecipe() { return recipe; }
     public Button GetButton() { return button; }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        PointerEnter?.Invoke(eventData, this);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        PointerExit?.Invoke(eventData, this);
+    }
 }

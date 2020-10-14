@@ -10,6 +10,7 @@ public class GameState : MonoBehaviour
 
     Restaurant restaurant;
     float timeLeftTillDayEnds;
+    public int customersServed { get; private set; }
     [SerializeField]
     UnityEngine.UI.GraphicRaycaster raycaster;
 
@@ -22,6 +23,12 @@ public class GameState : MonoBehaviour
     {
         instance = this;
         restaurant = new Restaurant(new List<Recipe>(Resources.LoadAll<Recipe>("Recipes")));
+        restaurant.OnCustomerServed += Restaurant_OnCustomerServed;
+    }
+
+    private void Restaurant_OnCustomerServed(Customer obj)
+    {
+        customersServed++;
     }
 
     private void Start()
